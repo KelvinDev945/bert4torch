@@ -37,7 +37,14 @@
   - [x] Seq2Seq 示例（T5）✅
   - [x] 关系抽取示例✅
   - [ ] 对抗训练示例
-- [ ] 单元测试
+- [x] 单元测试 ✅
+  - [x] backend.py 单元测试（7个测试）
+  - [x] layers.py 单元测试（20个测试）
+  - [x] models.py 单元测试（17个测试）
+  - [x] optimizers.py 单元测试（11个测试）
+  - [x] snippets.py 单元测试（13个测试）
+  - [x] tokenizers.py 单元测试（14个测试）
+  - **总计**: 82个测试，全部通过 ✅
 - [ ] 完整的预训练支持
 - [ ] 更多模型（ALBERT、ELECTRA 等）
 - [ ] 性能优化
@@ -52,6 +59,16 @@
 - snippets.py: ~300 行
 - tokenizers.py: ~200 行
 - **总计**: ~1720 行
+
+### 测试代码量
+- test_backend.py: ~116 行
+- test_layers.py: ~216 行
+- test_models.py: ~279 行
+- test_optimizers.py: ~260 行
+- test_snippets.py: ~234 行
+- test_tokenizers.py: ~378 行
+- **测试总计**: ~1492 行
+- **测试覆盖**: 82个测试用例，全部通过 ✅
 
 ### Git 提交记录
 1. ✅ 完成 backend.py, layers.py, models.py 核心实现
@@ -71,6 +88,20 @@
 ## 📝 开发日志
 
 ### 2025-11-11
+
+#### 最新更新
+
+**8. 完成单元测试**
+   - 创建了完整的单元测试套件
+   - 覆盖所有核心模块：backend、layers、models、optimizers、snippets、tokenizers
+   - 共82个测试用例，全部通过
+   - 测试包括：
+     - 基础功能测试
+     - 边界条件测试
+     - 错误处理测试
+     - 形状一致性测试
+     - 梯度流测试
+   - 修复了代码中的小bug（ViterbiDecoder的mask索引类型问题）
 
 #### 完成的工作
 

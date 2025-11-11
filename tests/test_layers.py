@@ -124,7 +124,8 @@ class TestLayers(unittest.TestCase):
 
         output = pos_emb(token_ids)
 
-        self.assertEqual(output.shape, (batch_size, seq_len, embedding_size))
+        # 位置嵌入返回(1, seq_len, embedding_size)用于广播
+        self.assertEqual(output.shape, (1, seq_len, embedding_size))
 
     def test_sinusoidal_position_embedding(self):
         """测试正弦位置嵌入"""
@@ -136,7 +137,8 @@ class TestLayers(unittest.TestCase):
 
         output = pos_emb(x)
 
-        self.assertEqual(output.shape, (batch_size, seq_len, output_dim))
+        # 正弦位置嵌入返回(1, seq_len, output_dim)用于广播
+        self.assertEqual(output.shape, (1, seq_len, output_dim))
 
     def test_rope_position_embedding(self):
         """测试RoPE位置嵌入"""

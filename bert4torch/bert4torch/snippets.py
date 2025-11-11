@@ -215,7 +215,7 @@ class ViterbiDecoder:
         for i in range(batch_size):
             nodes = emissions[i]
             if mask is not None:
-                nodes = nodes[:mask[i].sum()]
+                nodes = nodes[:int(mask[i].sum())]
 
             path = self._viterbi(nodes)
             paths.append(path)

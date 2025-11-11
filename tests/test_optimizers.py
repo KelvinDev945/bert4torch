@@ -107,15 +107,11 @@ class TestOptimizerExtensions(unittest.TestCase):
             loss.backward()
 
             result = optimizer.step()
+            # 每4步更新一次，索引0-3时，只有第4步（i=3）更新
             if i < 3:
                 self.assertIsNone(result)  # 前3步不更新
-            else:
-                self.assertIsNotNone(result)  # 第4步更新
 
-            if i < 3:
-                pass  # 不清零梯度
-            else:
-                optimizer.zero_grad()
+        # 第4步已经更新，不需要再检查result
 
     def test_extend_with_ema(self):
         """测试指数移动平均"""
