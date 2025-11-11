@@ -1,0 +1,7 @@
+README.md
+setup.py
+bert4torch.egg-info/PKG-INFO
+bert4torch.egg-info/SOURCES.txt
+bert4torch.egg-info/dependency_links.txt
+bert4torch.egg-info/requires.txt
+bert4torch.egg-info/top_level.txt

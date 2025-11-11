@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: bert4torch
+Version: 0.1.0
+Summary: Reimplement bert4keras with PyTorch
+Author: kelvin
+Requires-Python: >=3.7
+Requires-Dist: torch>=1.10.0
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
