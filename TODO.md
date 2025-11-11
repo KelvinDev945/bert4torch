@@ -8,15 +8,16 @@
 - [x] 实现 backend.py（位置编码、mask、激活函数等）
 - [x] 实现 layers.py（MultiHeadAttention、FeedForward、LayerNorm 等）
 - [x] 实现 models.py 基础（BERT、RoFormer、GPT、T5 模型）
+- [x] 实现 optimizers.py（AdamW、学习率调度、EMA、梯度累积等）
+- [x] 实现 snippets.py（数据处理、解码器等工具函数）
+- [x] 实现 tokenizers.py（BERT分词器）
 
 ## 🚧 进行中
 
-- [ ] 实现优化器和训练技巧
+- [ ] 编写示例代码验证功能
 
 ## 📋 待完成
 
-- [ ] 实现工具函数（snippets.py）
-- [ ] 实现 tokenizers.py
 - [ ] 编写示例代码
   - [ ] 基础示例（特征提取、MLM测试）
   - [ ] 文本分类示例
@@ -77,9 +78,37 @@
 - 最少的注释和文档
 - 单文件组织，便于阅读和修改
 
+5. **optimizers.py 实现**
+   - `AdamW`: AdamW 优化器
+   - `extend_with_weight_decay()`: 权重衰减装饰器
+   - `extend_with_piecewise_linear_lr()`: 分段线性学习率装饰器
+   - `extend_with_gradient_accumulation()`: 梯度累积装饰器
+   - `extend_with_exponential_moving_average()`: EMA 装饰器
+   - `extend_with_lookahead()`: Lookahead 装饰器
+   - `get_linear_schedule_with_warmup()`: 线性 warmup 调度器
+   - `get_cosine_schedule_with_warmup()`: 余弦 warmup 调度器
+
+6. **snippets.py 实现**
+   - `sequence_padding()`: 序列填充
+   - `truncate_sequences()`: 序列截断
+   - `text_segmentate()`: 文本分段
+   - `DataGenerator`: 数据生成器基类
+   - `AutoRegressiveDecoder`: 自回归解码器（beam search、random sample）
+   - `ViterbiDecoder`: 维特比解码器
+   - `parallel_apply()`: 并行处理
+   - 装饰器工具函数
+
+7. **tokenizers.py 实现**
+   - `TokenizerBase`: 分词器基类
+   - `Tokenizer`: BERT 分词器
+   - `load_vocab()`: 加载词表
+   - `save_vocab()`: 保存词表
+   - WordPiece 分词
+   - 中文字符处理
+   - `rematch()`: token 映射回原文本
+
 #### 下一步计划
 
-1. 实现 `optimizers.py`（优化器扩展和训练技巧）
-2. 实现 `snippets.py`（数据加载、解码器等工具函数）
-3. 实现 `tokenizers.py`（分词器）
-4. 编写示例代码验证功能
+1. 编写示例代码验证功能
+2. 编写单元测试
+3. 完善文档
