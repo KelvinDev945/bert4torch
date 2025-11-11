@@ -21,6 +21,10 @@
 - [x] basic_test.py：基础功能测试
 - [x] task_sentiment_classification.py：文本分类示例
 - [x] task_ner_crf.py：序列标注示例（BERT+CRF）
+- [x] task_text_generation_gpt.py：GPT 文本生成示例
+- [x] task_seq2seq_t5.py：T5 Seq2Seq 示例
+- [x] task_relation_extraction.py：关系抽取示例
+- [x] examples/README.md：示例说明文档
 
 #### 4. 文档
 - [x] README.md：完整的项目文档
@@ -28,10 +32,10 @@
 
 ## 📋 未来可以添加的功能
 
-- [ ] 更多示例代码
-  - [ ] 文本生成示例（GPT）
-  - [ ] Seq2Seq 示例（T5）
-  - [ ] 关系抽取示例
+- [x] 更多示例代码
+  - [x] 文本生成示例（GPT）✅
+  - [x] Seq2Seq 示例（T5）✅
+  - [x] 关系抽取示例✅
   - [ ] 对抗训练示例
 - [ ] 单元测试
 - [ ] 完整的预训练支持
@@ -54,6 +58,7 @@
 2. ✅ 完成 optimizers.py, snippets.py, tokenizers.py
 3. ✅ 添加示例代码并整理目录结构
 4. ✅ 更新 README 文档
+5. ✅ 添加更多示例代码（GPT、T5、关系抽取）
 
 ## 🏆 项目亮点
 

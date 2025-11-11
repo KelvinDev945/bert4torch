@@ -62,7 +62,18 @@ python task_sentiment_classification.py
 
 # 命名实体识别 (BERT + CRF)
 python task_ner_crf.py
+
+# GPT 文本生成
+python task_text_generation_gpt.py
+
+# T5 Seq2Seq（标题生成/翻译/摘要）
+python task_seq2seq_t5.py
+
+# 关系抽取 (BERT + GlobalPointer)
+python task_relation_extraction.py
 ```
+
+查看 [examples/README.md](examples/README.md) 了解详细说明。
 
 ## 🏗️ 项目结构
 
