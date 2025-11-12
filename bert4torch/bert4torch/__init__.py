@@ -32,6 +32,18 @@ from .config import (
     create_experiment_configs
 )
 
+from .precision import (
+    convert_to_bfloat16,
+    FP8Linear,
+    GradScalerWrapper,
+    AMPContext,
+    get_precision_context,
+    apply_precision_to_model,
+    check_fp8_support,
+    get_recommended_precision,
+    setup_precision_environment
+)
+
 __all__ = [
     'BERT', 'RoFormer', 'GPT', 'T5',
     'build_transformer_model',
@@ -49,4 +61,13 @@ __all__ = [
     'ViterbiDecoder',
     'OptimizationConfig',
     'create_experiment_configs',
+    'convert_to_bfloat16',
+    'FP8Linear',
+    'GradScalerWrapper',
+    'AMPContext',
+    'get_precision_context',
+    'apply_precision_to_model',
+    'check_fp8_support',
+    'get_recommended_precision',
+    'setup_precision_environment',
 ]
