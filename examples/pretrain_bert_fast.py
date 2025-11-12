@@ -182,6 +182,10 @@ def main(args):
         if step >= args.max_steps:
             break
 
+        # CUDA Graphs 步骤标记（修复 FP8 + torch.compile 兼容性）
+        if config.use_compile and config.fp8_lm_head:
+            torch.compiler.cudagraph_mark_step_begin()
+
         # 移动数据到设备
         batch = [b.to(device) for b in batch]
 

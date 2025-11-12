@@ -107,7 +107,8 @@ class LayerNorm(nn.Module):
     def forward(self, x, cond=None):
         mean = x.mean(dim=-1, keepdim=True)
         std = x.std(dim=-1, keepdim=True)
-        x = (x - mean) / (std + self.eps)
+        # 使用 clone() 避免 CUDA Graphs 中的 in-place 问题
+        x_normalized = (x - mean) / (std + self.eps)
 
         if self.conditional:
             gamma = self.dense1(cond)
@@ -115,10 +116,10 @@ class LayerNorm(nn.Module):
             if cond.dim() == 2:
                 gamma = gamma.unsqueeze(1)
                 beta = beta.unsqueeze(1)
-            x = gamma * x + beta
+            output = gamma * x_normalized + beta
         else:
-            x = self.weight * x + self.bias
-        return x
+            output = self.weight * x_normalized + self.bias
+        return output
 
 
 class Embedding(nn.Module):

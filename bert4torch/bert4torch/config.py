@@ -199,12 +199,16 @@ class OptimizationConfig:
 
     @classmethod
     def get_full_optimized_config(cls) -> 'OptimizationConfig':
-        """获取完全优化配置（所有优化）"""
+        """获取完全优化配置（所有优化）
+
+        注意: torch.compile 使用 CUDA Graphs 时与某些操作不兼容，
+        这里禁用 compile 以使用 FP8 和其他所有优化。
+        """
         return cls(
             precision='bf16',
             use_amp=True,
-            fp8_lm_head=True,
-            use_compile=True,
+            fp8_lm_head=True,  # 启用 FP8
+            use_compile=False,  # 禁用 compile 避免 CUDA Graphs 冲突
             compile_fullgraph=True,
             compile_mode='max-autotune',
             optimizer_type='normuon',
