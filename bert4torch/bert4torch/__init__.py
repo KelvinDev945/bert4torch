@@ -15,6 +15,9 @@ from .tokenizers import Tokenizer, load_vocab
 
 from .optimizers import (
     AdamW,
+    Muon,
+    NorMuon,
+    polar_express,
     get_linear_schedule_with_warmup,
     get_cosine_schedule_with_warmup
 )

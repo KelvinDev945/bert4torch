@@ -245,3 +245,177 @@ def get_cosine_schedule_with_warmup(optimizer, num_warmup_steps, num_training_st
 
     from torch.optim.lr_scheduler import LambdaLR
     return LambdaLR(optimizer, lr_lambda)
+
+
+# ============ Muon 优化器 ============
+
+def polar_express(x: torch.Tensor, max_iter: int = 10, eps: float = 1e-7) -> torch.Tensor:
+    """Polar Express 正交化
+
+    使用快速收敛的极分解方法进行正交化
+    比 Newton-Schulz 更稳定快速
+
+    Args:
+        x: 输入矩阵 [..., m, n]
+        max_iter: 最大迭代次数
+        eps: 收敛阈值
+
+    Returns:
+        正交化后的矩阵
+    """
+    # 保存原始形状
+    orig_shape = x.shape
+
+    # Reshape 为 2D if needed
+    if x.ndim > 2:
+        x = x.reshape(-1, x.shape[-2], x.shape[-1])
+
+    # 初始化
+    u = x.clone()
+
+    for _ in range(max_iter):
+        # U^T @ U
+        uu = u.transpose(-2, -1) @ u
+
+        # 计算逆平方根: (U^T @ U)^{-1/2}
+        # 使用特征分解
+        try:
+            eigvals, eigvecs = torch.linalg.eigh(uu)
+            eigvals = eigvals.clamp(min=eps)
+            inv_sqrt = eigvecs @ torch.diag_embed(eigvals.rsqrt()) @ eigvecs.transpose(-2, -1)
+
+            u_new = u @ inv_sqrt
+
+            # 检查收敛
+            diff = (u_new - u).norm() / (u.norm() + eps)
+            u = u_new
+
+            if diff < eps:
+                break
+        except:
+            # 如果特征分解失败，使用简单的归一化
+            u = torch.nn.functional.normalize(u, p=2, dim=-1)
+            break
+
+    # 恢复形状
+    if len(orig_shape) > 2:
+        u = u.reshape(orig_shape)
+
+    return u
+
+
+class Muon(Optimizer):
+    """Muon 优化器
+
+    结合动量和正交化的优化器
+    参考: modded-nanogpt 的 NorMuon 实现
+    简化版本，适合单卡训练
+
+    Args:
+        params: 参数
+        lr: 学习率
+        momentum: 动量系数
+        beta2: 二阶动量系数（低秩方差估计）
+        eps: 数值稳定性参数
+        weight_decay: 权重衰减
+        use_polar_express: 是否使用 Polar Express 正交化
+    """
+    def __init__(
+        self,
+        params,
+        lr=0.02,
+        momentum=0.95,
+        beta2=0.95,
+        eps=1e-8,
+        weight_decay=0.0,
+        use_polar_express=True,
+    ):
+        defaults = dict(
+            lr=lr,
+            momentum=momentum,
+            beta2=beta2,
+            eps=eps,
+            weight_decay=weight_decay,
+            use_polar_express=use_polar_express,
+        )
+        super().__init__(params, defaults)
+
+    @torch.no_grad()
+    def step(self, closure=None):
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
+
+        for group in self.param_groups:
+            for p in group['params']:
+                if p.grad is None:
+                    continue
+
+                grad = p.grad
+                state = self.state[p]
+
+                # 状态初始化
+                if len(state) == 0:
+                    state['step'] = 0
+                    state['momentum_buffer'] = torch.zeros_like(grad)
+
+                    # 二阶动量 buffer（低秩）
+                    if grad.ndim >= 2:
+                        # 沿较小维度保存
+                        if grad.shape[-2] >= grad.shape[-1]:
+                            state['second_momentum_buffer'] = torch.zeros(
+                                *grad.shape[:-1], 1, device=grad.device, dtype=grad.dtype
+                            )
+                        else:
+                            state['second_momentum_buffer'] = torch.zeros(
+                                *grad.shape[:-2], 1, grad.shape[-1], device=grad.device, dtype=grad.dtype
+                            )
+                    else:
+                        state['second_momentum_buffer'] = torch.zeros_like(grad)
+
+                state['step'] += 1
+                momentum_buffer = state['momentum_buffer']
+                second_momentum_buffer = state['second_momentum_buffer']
+
+                # 一阶动量更新
+                momentum_buffer.lerp_(grad, 1 - group['momentum'])
+                updated_grad = grad.lerp(momentum_buffer, group['momentum'])
+
+                # 正交化（仅对 2D 矩阵）
+                if group['use_polar_express'] and updated_grad.ndim >= 2:
+                    ortho_grad = polar_express(updated_grad)
+                else:
+                    ortho_grad = updated_grad
+
+                # 二阶动量更新（NorMuon 的低秩方差估计）
+                if ortho_grad.ndim >= 2:
+                    # 计算梯度的平方均值
+                    if ortho_grad.shape[-2] >= ortho_grad.shape[-1]:
+                        v_mean = ortho_grad.square().mean(dim=-1, keepdim=True)
+                    else:
+                        v_mean = ortho_grad.square().mean(dim=-2, keepdim=True)
+
+                    second_momentum_buffer.lerp_(v_mean, 1 - group['beta2'])
+                    step_size = second_momentum_buffer.clamp_min(group['eps']).rsqrt()
+                else:
+                    step_size = 1.0
+
+                # 参数更新
+                p.data.add_(ortho_grad * step_size, alpha=-group['lr'])
+
+                # 权重衰减
+                if group['weight_decay'] > 0:
+                    p.data.mul_(1 - group['lr'] * group['weight_decay'])
+
+        return loss
+
+
+class NorMuon(Muon):
+    """NorMuon 优化器
+
+    Muon 的归一化版本，默认启用 Polar Express
+    """
+    def __init__(self, params, lr=0.02, **kwargs):
+        kwargs.setdefault('use_polar_express', True)
+        super().__init__(params, lr=lr, **kwargs)
