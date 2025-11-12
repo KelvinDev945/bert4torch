@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Compile + Normuon + FlashAttn-FA2 + QKNorm",
+  "total_time": 3.166520595550537,
+  "tokens_per_sec": 64676.66759779691,
+  "final_loss": 65.843310546875,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 5.777128219604492
+}

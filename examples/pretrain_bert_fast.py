@@ -44,8 +44,8 @@ def train_step(model, batch, criterion, precision_ctx):
     input_ids, attention_mask, labels = batch
 
     with precision_ctx:
-        # 前向传播
-        logits = model(input_ids, attention_mask=attention_mask)
+        # 前向传播（BERT模型会自动计算attention_mask）
+        logits = model(input_ids)
 
         # 计算损失（简化的 MLM 损失）
         loss = criterion(logits.view(-1, logits.size(-1)), labels.view(-1))

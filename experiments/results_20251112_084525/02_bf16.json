@@ -1,0 +1,9 @@
+{
+  "config": "BF16",
+  "total_time": 2.118695020675659,
+  "tokens_per_sec": 96663.27527153416,
+  "final_loss": 44.4955394744873,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 3.9261868000030518
+}

@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Compile + Normuon",
+  "total_time": 3.1727347373962402,
+  "tokens_per_sec": 64549.99139577382,
+  "final_loss": 65.2066146850586,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 5.789933681488037
+}

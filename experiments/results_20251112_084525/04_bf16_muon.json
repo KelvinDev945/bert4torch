@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Normuon",
+  "total_time": 2.1584067344665527,
+  "tokens_per_sec": 94884.80402217427,
+  "final_loss": 58.80985565185547,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 3.999235153198242
+}

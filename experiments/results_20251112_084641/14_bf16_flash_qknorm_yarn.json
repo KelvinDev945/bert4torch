@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + FlashAttn-FA2 + QKNorm",
+  "total_time": 2.1296708583831787,
+  "tokens_per_sec": 96165.09480506381,
+  "final_loss": 44.51131591796875,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 3.968031167984009
+}

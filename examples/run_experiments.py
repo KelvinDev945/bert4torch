@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from bert4torch.bert4torch import create_experiment_configs
 
 
-def run_experiment(config_name, config, max_steps=500):
+def run_experiment(config_name, config, max_steps=500, model_params=None):
     """运行单个实验"""
     print(f"\n{'='*70}")
     print(f"实验: {config_name}")
@@ -33,6 +33,11 @@ def run_experiment(config_name, config, max_steps=500):
         '--config', config_file,
         '--max_steps', str(max_steps),
     ]
+
+    # 添加模型参数（用于小模型配置）
+    if model_params:
+        for key, value in model_params.items():
+            cmd.extend([f'--{key}', str(value)])
 
     start_time = time.time()
 
@@ -99,11 +104,21 @@ def main():
 
     print(f"\n将运行 {len(configs)} 个实验配置\n")
 
+    # 小模型配置（避免内存不足）
+    model_params = {
+        'batch_size': 4,
+        'hidden_size': 256,
+        'num_layers': 4,
+        'num_heads': 4,
+    }
+
+    print(f"使用小模型配置: hidden_size=256, num_layers=4, batch_size=4\n")
+
     # 运行所有实验
     all_results = {}
 
     for config_name, config in configs.items():
-        results = run_experiment(config_name, config, max_steps=500)
+        results = run_experiment(config_name, config, max_steps=100, model_params=model_params)
         all_results[config_name] = results
 
         # 保存单个实验结果

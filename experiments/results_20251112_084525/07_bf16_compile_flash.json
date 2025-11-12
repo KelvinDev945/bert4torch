@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Compile + FlashAttn-FA2",
+  "total_time": 3.1277928352355957,
+  "tokens_per_sec": 65477.48229769629,
+  "final_loss": 45.11008834838867,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 5.744391441345215
+}

@@ -1,0 +1,9 @@
+{
+  "config": "Baseline (\u65e0\u4f18\u5316)",
+  "total_time": 2.609893560409546,
+  "tokens_per_sec": 78470.63309657067,
+  "final_loss": 41.653826522827146,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 4.462735414505005
+}

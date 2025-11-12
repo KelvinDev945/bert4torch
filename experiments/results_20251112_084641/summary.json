@@ -1,0 +1,134 @@
+{
+  "01_baseline": {
+    "config": "Baseline (\u65e0\u4f18\u5316)",
+    "total_time": 2.609866142272949,
+    "tokens_per_sec": 78471.45747545442,
+    "final_loss": 41.022804260253906,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 4.452125310897827
+  },
+  "02_bf16": {
+    "config": "BF16",
+    "total_time": 2.1291563510894775,
+    "tokens_per_sec": 96188.33294943557,
+    "final_loss": 44.583841705322264,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 3.9442989826202393
+  },
+  "03_bf16_compile": {
+    "config": "BF16 + Compile",
+    "total_time": 3.1356067657470703,
+    "tokens_per_sec": 65314.312444151656,
+    "final_loss": 44.3335464477539,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.731441259384155
+  },
+  "04_bf16_muon": {
+    "config": "BF16 + Normuon",
+    "total_time": 2.161195993423462,
+    "tokens_per_sec": 94762.34484202643,
+    "final_loss": 85.6109718322754,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 3.9843595027923584
+  },
+  "05_bf16_flash": {
+    "config": "BF16 + FlashAttn-FA2",
+    "total_time": 2.1295180320739746,
+    "tokens_per_sec": 96171.99615846488,
+    "final_loss": 44.89303550720215,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 3.960433006286621
+  },
+  "06_bf16_compile_muon": {
+    "config": "BF16 + Compile + Normuon",
+    "total_time": 3.1727347373962402,
+    "tokens_per_sec": 64549.99139577382,
+    "final_loss": 65.2066146850586,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.789933681488037
+  },
+  "07_bf16_compile_flash": {
+    "config": "BF16 + Compile + FlashAttn-FA2",
+    "total_time": 3.130417823791504,
+    "tokens_per_sec": 65422.57664248475,
+    "final_loss": 44.544044494628906,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.73288106918335
+  },
+  "08_bf16_muon_flash": {
+    "config": "BF16 + Normuon + FlashAttn-FA2",
+    "total_time": 2.156752347946167,
+    "tokens_per_sec": 94957.58759461976,
+    "final_loss": 66.90504302978516,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 3.987269163131714
+  },
+  "09_bf16_compile_muon_flash": {
+    "config": "BF16 + Compile + Normuon + FlashAttn-FA2",
+    "total_time": 3.169445753097534,
+    "tokens_per_sec": 64616.975949137704,
+    "final_loss": 67.20613632202148,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.7778050899505615
+  },
+  "10_bf16_compile_muon_flash_qknorm": {
+    "config": "BF16 + Compile + Normuon + FlashAttn-FA2 + QKNorm",
+    "total_time": 3.1671230792999268,
+    "tokens_per_sec": 64664.36411598812,
+    "final_loss": 63.79208679199219,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.757731199264526
+  },
+  "11_recommended": {
+    "config": "BF16 + Compile + Normuon + FlashAttn-FA2 + QKNorm + AsyncData",
+    "total_time": 3.1701834201812744,
+    "tokens_per_sec": 64601.94028403862,
+    "final_loss": 64.38664245605469,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.792603254318237
+  },
+  "12_full_optimized": {
+    "config": "BF16 + Compile + Normuon + FlashAttn-FA2 + QKNorm + FP8-LMHead + AsyncData",
+    "error": "Traceback (most recent call last):\n  File \"/home/kelvin/bert4torch/examples/pretrain_bert_fast.py\", line 262, in <module>\n    results = main(args)\n  File \"/home/kelvin/bert4torch/examples/pretrain_bert_fast.py\", line 190, in main\n    loss.backward()\n  File \"/home/kelvin/.pyenv/versions/3.10.18/lib/python3.10/site-packages/torch/_tensor.py\", line 647, in backward\n    torch.autograd.backward(\n  File \"/home/kelvin/.pyenv/versions/3.10.18/lib/python3.10/site-packages/torch/autograd/__init__.py\", line 354, in backward\n    _engine_run_backward(\n  File \"/home/kelvin/.pyenv/versions/3.10.18/lib/python3.10/site-packages/torch/autograd/graph.py\", line 829, in _engine_run_backward\n    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass\nRuntimeError: Error: accessing tensor output of CUDAGraphs that has been overwritten by a subsequent run. Stack trace: File \"/home/kelvin/bert4torch/bert4torch/bert4torch/models.py\", line 33, in forward\n    outputs = self.apply_embeddings(inputs)\n  File \"/home/kelvin/bert4torch/bert4torch/bert4torch/models.py\", line 106, in apply_embeddings\n    x = self.emb_norm(x)\n  File \"/home/kelvin/bert4torch/bert4torch/bert4torch/layers.py\", line 120, in forward\n    x = self.weight * x + self.bias. To prevent overwriting, clone the tensor outside of torch.compile() or call torch.compiler.cudagraph_mark_step_begin() before each model invocation.\n",
+    "success": false,
+    "elapsed_time": 23.480722665786743
+  },
+  "13_bf16_compile_muon_asyncdata": {
+    "config": "BF16 + Compile + Normuon + AsyncData",
+    "total_time": 3.178399085998535,
+    "tokens_per_sec": 64434.954346099505,
+    "final_loss": 69.32614669799804,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.791477918624878
+  },
+  "14_bf16_flash_qknorm_yarn": {
+    "config": "BF16 + FlashAttn-FA2 + QKNorm",
+    "total_time": 2.1296708583831787,
+    "tokens_per_sec": 96165.09480506381,
+    "final_loss": 44.51131591796875,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 3.968031167984009
+  },
+  "15_bf16_compile_flash_fp8head": {
+    "config": "BF16 + Compile + FlashAttn-FA2 + FP8-LMHead",
+    "total_time": 3.1426820755004883,
+    "tokens_per_sec": 65167.2663921579,
+    "final_loss": 44.03547821044922,
+    "total_steps": 100,
+    "success": true,
+    "elapsed_time": 5.765024662017822
+  }
+}

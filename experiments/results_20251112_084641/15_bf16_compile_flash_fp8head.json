@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Compile + FlashAttn-FA2 + FP8-LMHead",
+  "total_time": 3.1426820755004883,
+  "tokens_per_sec": 65167.2663921579,
+  "final_loss": 44.03547821044922,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 5.765024662017822
+}

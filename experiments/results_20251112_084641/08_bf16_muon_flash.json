@@ -1,0 +1,9 @@
+{
+  "config": "BF16 + Normuon + FlashAttn-FA2",
+  "total_time": 2.156752347946167,
+  "tokens_per_sec": 94957.58759461976,
+  "final_loss": 66.90504302978516,
+  "total_steps": 100,
+  "success": true,
+  "elapsed_time": 3.987269163131714
+}

@@ -149,8 +149,21 @@ class OptimizationConfig:
 
     def to_yaml(self, yaml_path: str):
         """保存配置到 YAML 文件"""
+        config_dict = asdict(self)
+        # 将所有元组转换为列表，以避免YAML序列化问题
+        def convert_tuples(obj):
+            if isinstance(obj, dict):
+                return {k: convert_tuples(v) for k, v in obj.items()}
+            elif isinstance(obj, tuple):
+                return list(obj)
+            elif isinstance(obj, list):
+                return [convert_tuples(item) for item in obj]
+            else:
+                return obj
+
+        config_dict = convert_tuples(config_dict)
         with open(yaml_path, 'w', encoding='utf-8') as f:
-            yaml.dump(asdict(self), f, default_flow_style=False, allow_unicode=True)
+            yaml.dump(config_dict, f, default_flow_style=False, allow_unicode=True)
 
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典"""
