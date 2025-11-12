@@ -27,6 +27,11 @@ from .snippets import (
     ViterbiDecoder
 )
 
+from .config import (
+    OptimizationConfig,
+    create_experiment_configs
+)
+
 __all__ = [
     'BERT', 'RoFormer', 'GPT', 'T5',
     'build_transformer_model',
@@ -42,4 +47,6 @@ __all__ = [
     'DataGenerator',
     'AutoRegressiveDecoder',
     'ViterbiDecoder',
+    'OptimizationConfig',
+    'create_experiment_configs',
 ]
