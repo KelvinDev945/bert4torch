@@ -93,12 +93,11 @@ def test_bert_model():
         with_mlm=True,
     )
 
-    # 前向传播
+    # 前向传播（不使用 attention_mask 参数，BERT 会自动处理）
     input_ids = torch.randint(0, 1000, (4, 32))
-    attention_mask = torch.ones(4, 32, dtype=torch.bool)
 
     with torch.no_grad():
-        output = model(input_ids, attention_mask=attention_mask)
+        output = model(input_ids)
 
     assert output.shape == (4, 32, 1000)
 
