@@ -44,6 +44,17 @@ from .precision import (
     setup_precision_environment
 )
 
+from .distributed import (
+    setup_distributed,
+    cleanup_distributed,
+    is_distributed,
+    get_rank,
+    get_world_size,
+    wrap_model_ddp,
+    DistributedLogger,
+    DistributedContext
+)
+
 __all__ = [
     'BERT', 'RoFormer', 'GPT', 'T5',
     'build_transformer_model',
@@ -70,4 +81,12 @@ __all__ = [
     'check_fp8_support',
     'get_recommended_precision',
     'setup_precision_environment',
+    'setup_distributed',
+    'cleanup_distributed',
+    'is_distributed',
+    'get_rank',
+    'get_world_size',
+    'wrap_model_ddp',
+    'DistributedLogger',
+    'DistributedContext',
 ]
